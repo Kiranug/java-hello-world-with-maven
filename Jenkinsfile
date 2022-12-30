@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage("Checkout Code") {
             steps {
-            scmCheckout("https://github.com/jabedhasan21/java-hello-world-with-maven.git","master","git_credentials")
+            scmCheckout("https://github.com/Kiranug/java-hello-world-with-maven.git","master","git_credentials")
             }
         }
             stage("Code Build") {
