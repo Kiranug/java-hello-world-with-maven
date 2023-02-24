@@ -42,6 +42,9 @@ pipeline {
      }
 	stage ('Docker Build') {
         steps {
+		withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+		sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}" 
+		}
 		dockerbuild()
         }
      }
