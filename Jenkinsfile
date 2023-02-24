@@ -34,6 +34,8 @@ pipeline {
 				cluster_region = ConfigInputJSON."${Environment_Name}"."cluster_region";
 				jump_iap_server = ConfigInputJSON."${Environment_Name}"."jump_iap_server";
 				jump_server_region = ConfigInputJSON."${Environment_Name}"."jump_server_region";
+				AKS_RESOURCE_GROUP = ConfigInputJSON."${Environment_Name}"."AKS_RESOURCE_GROUP";
+		  	        AKS_CLUSTER_NAME = ConfigInputJSON."${Environment_Name}"."AKS_CLUSTER_NAME";
                 println project_id
             	println deployment_credential_id
             	println cluster_name
