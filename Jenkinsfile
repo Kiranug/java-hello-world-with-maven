@@ -25,8 +25,8 @@ pipeline {
       stage ('Read Yaml') {
         steps {
             script {
-                   def config_json=libraryResource "appconfig/deveast.json"
-	               def ConfigInputJSON = new JsonSlurperClassic().parseText(config_json)
+                def config_json=libraryResource "appconfig/deveast.json"
+	            def ConfigInputJSON = new JsonSlurperClassic().parseText(config_json)
 				project_id = ConfigInputJSON."${Environment_Name}"."#PROJECT_ID#";
 				deployment_credential_id = ConfigInputJSON."${Environment_Name}"."deployment_credential_id";
 				build_credential_id = ConfigInputJSON."${Environment_Name}"."build_credential_id";
@@ -48,7 +48,6 @@ pipeline {
 		dockerbuild()
         }
      }	    
-    stage {
         stage('Deploy to AKS') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
@@ -57,7 +56,5 @@ pipeline {
                 }
             }
         }
-     }
    }
 }
-
