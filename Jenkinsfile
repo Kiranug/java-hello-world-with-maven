@@ -48,7 +48,7 @@ pipeline {
 		dockerbuild()
         }
      }	    
-    stages {
+    stage {
         stage('Deploy to AKS') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
