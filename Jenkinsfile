@@ -76,7 +76,7 @@ pipeline {
 		sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
 		sh "az acr login --name ${REGISTRY} --resource-group  ${AKS_RESOURCE_GROUP}"
 		sh "ls -ltr"
-		sh "az acr build --image $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER --registry $ACR_NAME . "
+		sh "az acr build --image $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER --registry $REGISTRY . "
 		/*docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
                   docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
           	  docker.push()  */
