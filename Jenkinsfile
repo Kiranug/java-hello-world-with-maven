@@ -11,10 +11,10 @@ import jenkins.model.Jenkins;
 
 pipeline {
     environment {
-    ACR_NAME = 'terraformaksdevclusterregistry'
+    ACR_NAME = 'terraformaksdevclusterregistry123'
     IMAGE_NAME = "java-app"
     CREDENTIAL_ID = 'terraform_connection'
-    REGISTRY  = "terraformaksdevclusterregistry.azurecr.io"
+    REGISTRY  = "terraformaksdevclusterregistry123.azurecr.io"
 	    
   }
     agent any 
