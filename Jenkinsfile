@@ -10,6 +10,11 @@ import hudson.FilePath;
 import jenkins.model.Jenkins;
 
 pipeline {
+    environment {
+    ACR_NAME = 'appimages1991'
+    IMAGE_NAME = "${ACR_NAME}/java-app"
+    CREDENTIAL_ID = 'terraform_connection'
+  }
     agent any 
     stages {
         stage("Checkout Code") {
@@ -39,6 +44,8 @@ pipeline {
 		    		REGISTRY = ConfigInputJSON."${Environment_Name}"."REGISTRY";
 				IMAGE = ConfigInputJSON."${Environment_Name}"."IMAGE";
 		  	        TAG = ConfigInputJSON."${Environment_Name}"."TAG";
+		    		ACR_CREDENTIAL_ID = ConfigInputJSON."${Environment_Name}"."ACR_CREDENTIAL_ID";
+		    
                 println project_id
             	println deployment_credential_id
             	println cluster_name
@@ -62,10 +69,9 @@ pipeline {
 	stage('Build and Push Docker Image to acr') {
             steps {
                 script {
-                    docker.build("${REGISTRY}/${IMAGE}:${BUILD_NUMBER}")
-                    sh "az acr login --name ${REGISTRY}"
-                    docker.withRegistry("${REGISTRY}", "acr") {
-                        docker.push("${REGISTRY}/${IMAGE}:${BUILD_NUMBER}")
+         	 docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
+                  def customImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
+          	  customImage.push()  
                     }
                 }
             }
