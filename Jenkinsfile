@@ -49,9 +49,10 @@ pipeline {
         steps {
 		withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 		sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-		sh "az acr login --name ${REGISTRY}"		
+		sh "az acr login --name ${REGISTRY}"	
+		sh 'az acr build --registry $REGISTRY --image ${IMAGE}:${BUILD_NUMBER} .'
 		}
-		dockerbuild()
+		//dockerbuild()
         }
      }	    
         stage('Deploy to AKS') {
