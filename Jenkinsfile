@@ -11,7 +11,7 @@ import jenkins.model.Jenkins;
 
 pipeline {
     environment {
-    ACR_NAME = 'terraformaksdevclusterregistry123'
+    ACR_NAME = 'terraformaksdevclusterregistry1234'
     IMAGE_NAME = "java-app"
     CREDENTIAL_ID = 'terraform_connection'
     REGISTRY  = "terraformaksdevclusterregistry1234.azurecr.io"
