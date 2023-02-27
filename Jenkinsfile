@@ -12,8 +12,10 @@ import jenkins.model.Jenkins;
 pipeline {
     environment {
     ACR_NAME = 'appimages1991'
-    IMAGE_NAME = "${ACR_NAME}/java-app"
+    IMAGE_NAME = "java-app"
     CREDENTIAL_ID = 'terraform_connection'
+    REGISTRY  = "appimages1991.azurecr.io"
+	    
   }
     agent any 
     stages {
@@ -69,9 +71,14 @@ pipeline {
 	stage('Build and Push Docker Image to acr') {
             steps {
                 script {
-         	 docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
+		withCredentials([usernamePassword(credentialsId: 'terraform_connection', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+         	sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+		sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
+		sh 'az acr login --name $CONTAINER_REGISTRY --resource-group $RESOURCE_GROUP'
+		sh 'az acr build --image $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER --registry $ACR_NAME --file Dockerfile . '
+		/*docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
                   docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
-          	  docker.push()  
+          	  docker.push()  */
                     }
                 }
             }
