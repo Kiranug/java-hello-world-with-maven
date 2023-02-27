@@ -14,7 +14,7 @@ pipeline {
     ACR_NAME = 'terraformaksdevclusterregistry123'
     IMAGE_NAME = "java-app"
     CREDENTIAL_ID = 'terraform_connection'
-    REGISTRY  = "terraformaksdevclusterregistry123.azurecr.io"
+    REGISTRY  = "terraformaksdevclusterregistry1234.azurecr.io"
 	    
   }
     agent any 
