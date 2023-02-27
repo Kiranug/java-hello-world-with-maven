@@ -36,6 +36,9 @@ pipeline {
 				jump_server_region = ConfigInputJSON."${Environment_Name}"."jump_server_region";
 				AKS_RESOURCE_GROUP = ConfigInputJSON."${Environment_Name}"."AKS_RESOURCE_GROUP";
 		  	        AKS_CLUSTER_NAME = ConfigInputJSON."${Environment_Name}"."AKS_CLUSTER_NAME";
+		    		REGISTRY = ConfigInputJSON."${Environment_Name}"."REGISTRY";
+				IMAGE = ConfigInputJSON."${Environment_Name}"."IMAGE";
+		  	        TAG = ConfigInputJSON."${Environment_Name}"."TAG";
                 println project_id
             	println deployment_credential_id
             	println cluster_name
@@ -45,7 +48,8 @@ pipeline {
 	stage ('Docker Build') {
         steps {
 		withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-		sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}" 
+		sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+		sh "az acr login --name ${REGISTRY}"		
 		}
 		dockerbuild()
         }
