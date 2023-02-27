@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app1-nginx
-          image: appimages1991.azurecr.io/java-app:67
+          image: appimages19911012.azurecr.io/java-app:67
           ports:
             - containerPort: 80
 ---
