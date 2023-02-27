@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app1-nginx
-          image: kiranug/javaapp
+          image: kiranug/javaapp:44
           ports:
             - containerPort: 80
 ---
