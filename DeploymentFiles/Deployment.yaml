@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app1-nginx
-          image: terraformaksdevclusterregistry1234.azurecr.io/java-app
+          image: terraformaksdevclusterregistry1234.azurecr.io/java-app:#IMGVERSION#
           ports:
             - containerPort: 80
 ---
