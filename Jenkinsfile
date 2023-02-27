@@ -70,8 +70,8 @@ pipeline {
             steps {
                 script {
          	 docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
-                  def customImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
-          	  customImage.push()  
+                  docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
+          	  docker.push()  
                     }
                 }
             }
