@@ -74,7 +74,7 @@ pipeline {
 		withCredentials([azureServicePrincipal(credentialsId: 'terraform_connection', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
          	sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
 		sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
-		sh 'az acr login --name $CONTAINER_REGISTRY --resource-group ${AKS_RESOURCE_GROUP}'
+		sh 'az acr login --name ${REGISTRY} --resource-group ${AKS_RESOURCE_GROUP}'
 		sh 'az acr build --image $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER --registry $ACR_NAME --file Dockerfile . '
 		/*docker.withRegistry("https://${ACR_NAME}.azurecr.io", "${CREDENTIAL_ID}") {
                   docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
