@@ -74,6 +74,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     sh "az aks get-credentials --resource-group ${AKS_RESOURCE_GROUP} --name ${AKS_CLUSTER_NAME} --file /opt/kuberconfig.yaml"
+			sh "az acr login --name ${REGISTRY}"
 			sh "kubectl apply -f ${workspace}/DeploymentFiles/Deployment.yaml"
                 }
             }
