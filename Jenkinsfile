@@ -15,6 +15,7 @@ pipeline {
     IMAGE_NAME = "java-app"
     CREDENTIAL_ID = 'terraform_connection'
     REGISTRY  = "terraformaksdevclusterregistry1234.azurecr.io"
+    AZURE_SUBSCRIPTION_ID = "5db014fe-1501-4706-a3a2-e0fb1f0ecb10"
 	    
   }
     agent any 
