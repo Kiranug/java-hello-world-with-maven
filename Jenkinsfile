@@ -44,7 +44,7 @@ pipeline {
 		    		REGISTRY = ConfigInputJSON."${Environment_Name}"."REGISTRY";
 				IMAGE = ConfigInputJSON."${Environment_Name}"."IMAGE";
 		  	        TAG = ConfigInputJSON."${Environment_Name}"."TAG";
-		    		ACR_CREDENTIAL_ID = ConfigInputJSON."${Environment_Name}"."ACR_CREDENTIAL_ID";
+		    		ACR_CREDENTIAL_ID = ConfigInputJSON."${Environment_Name}"."ACR_CREDENTIAL_ID"
 		    
                 println project_id
             	println deployment_credential_id
