@@ -58,7 +58,18 @@ pipeline {
 		}
 		//dockerbuild()
         }
-     }	    
+     }
+	stage('Build and Push Docker Image to acr') {
+            steps {
+                script {
+                    docker.build("${REGISTRY}/${IMAGE}:${BUILD_NUMBER}")
+                    sh "az acr login --name ${REGISTRY}"
+                    docker.withRegistry("${REGISTRY}", "acr") {
+                        docker.push("${REGISTRY}/${IMAGE}:${BUILD_NUMBER}")
+                    }
+                }
+            }
+        }
         stage('Deploy to AKS') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
