@@ -18,7 +18,7 @@ spec:
         - name: app1-nginx
           image: terraformaksdevclusterregistry1234.azurecr.io/java-app:#IMGVERSION#
           ports:
-            - containerPort: 80
+            - containerPort: 8080
       imagePullSecrets:
         - name: acr-secret
 ---
