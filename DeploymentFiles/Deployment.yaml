@@ -17,7 +17,6 @@ spec:
       containers:
         - name: app1-nginx
           image: terraformaksdevclusterregistry1234.azurecr.io/java-app:#IMGVERSION#
-          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
       imagePullSecrets:
