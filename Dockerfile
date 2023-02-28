@@ -1,16 +1,11 @@
-# Use the official Tomcat 9 image as the base image
-FROM tomcat:9.0
-
-# Set the working directory to the Tomcat webapps directory
-WORKDIR /usr/local/tomcat/webapps
-
-# Copy the WAR file of your application to the webapps directory
-
-ADD target/jb-hello-world-maven-0.2.0.jar /usr/local/tomcat/webapps/
-
-# Expose port 8080 for Tomcat to listen on
+#FROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.86/bin/apache-tomcat-8.5.86.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-8.5.86/* /usr/local/tomcat/
+COPY target/jb-hello-world-maven-0.2.0.jar /usr/local/tomcat/webapps/
 EXPOSE 8080
 
-# Start Tomcat when the container starts
-CMD ["catalina.sh", "run"]
-
+CMD /usr/local/tomcat/bin/catalina.sh run
