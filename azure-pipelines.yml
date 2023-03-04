@@ -5,17 +5,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageRepository: 'mycontainerregistry.azurecr.io/myapp'
+  imageRepository: 'terraformaksdevclusterregistry1234.azurecr.io/myapp'
   imageTag: '$(Build.BuildId)'
-
+  
 stages:
 - stage: Build
   jobs:
   - job: Build
     steps:
     - script: |
-        npm install
-        npm run build
+        mvn clean package
         docker build -t $(imageRepository):$(imageTag) .
         docker push $(imageRepository):$(imageTag)
       displayName: 'Build and push Docker image'
@@ -28,8 +27,8 @@ stages:
       inputs:
         connectionType: 'Azure Resource Manager'
         azureSubscriptionEndpoint: 'MyAzureSubscription'
-        azureResourceGroup: 'MyResourceGroup'
-        kubernetesCluster: 'MyAKSCluster'
+        azureResourceGroup: 'terraform-aks-dev'
+        kubernetesCluster: 'terraform-aks-dev-cluster'
         namespace: 'default'
         command: 'apply'
         useConfigurationFile: true
