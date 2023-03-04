@@ -16,6 +16,7 @@ stages:
     steps:
     - script: |
         mvn clean package
+        docker login terraformaksdevclusterregistry1234.azurecr.io --username $(acruser) --password $(acrpassword)
         docker build -t $(imageRepository):$(imageTag) .
         docker push $(imageRepository):$(imageTag)
       displayName: 'Build and push Docker image'
