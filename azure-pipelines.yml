@@ -39,6 +39,6 @@ stages:
         imagePullSecrets: |
           [
             {
-              "name": "myregistrykey"
+              "name": "acr-secret"
             }
           ]
