@@ -26,15 +26,15 @@ stages:
     - task: Kubernetes@1
       inputs:
         connectionType: 'Azure Resource Manager'
-        azureSubscriptionEndpoint: 'MyAzureSubscription'
+        azureSubscriptionEndpoint: '5db014fe-1501-4706-a3a2-e0fb1f0ecb10'
         azureResourceGroup: 'terraform-aks-dev'
         kubernetesCluster: 'terraform-aks-dev-cluster'
         namespace: 'default'
         command: 'apply'
         useConfigurationFile: true
-        configuration: '$(System.DefaultWorkingDirectory)/kubernetes/deployment.yaml'
+        configuration: '$(System.DefaultWorkingDirectory)/DeploymentFiles/Deployment.yaml'
         containerRegistryType: 'Azure Container Registry'
-        azureContainerRegistry: 'mycontainerregistry'
+        azureContainerRegistry: 'terraformaksdevclusterregistry1234'
         azureContainerRegistryType: 'Azure Resource Manager'
         imagePullSecrets: |
           [
