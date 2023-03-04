@@ -31,6 +31,11 @@ stages:
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/target'
         ArtifactName: 'my-artifact'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'my-artifact'
+        targetPath: '$(Build.SourcesDirectory)'
 - stage: Build_Docker
   displayName: Build and push stage
   jobs:
