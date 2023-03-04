@@ -1,0 +1,45 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageRepository: 'mycontainerregistry.azurecr.io/myapp'
+  imageTag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - script: |
+        npm install
+        npm run build
+        docker build -t $(imageRepository):$(imageTag) .
+        docker push $(imageRepository):$(imageTag)
+      displayName: 'Build and push Docker image'
+
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscriptionEndpoint: 'MyAzureSubscription'
+        azureResourceGroup: 'MyResourceGroup'
+        kubernetesCluster: 'MyAKSCluster'
+        namespace: 'default'
+        command: 'apply'
+        useConfigurationFile: true
+        configuration: '$(System.DefaultWorkingDirectory)/kubernetes/deployment.yaml'
+        containerRegistryType: 'Azure Container Registry'
+        azureContainerRegistry: 'mycontainerregistry'
+        azureContainerRegistryType: 'Azure Resource Manager'
+        imagePullSecrets: |
+          [
+            {
+              "name": "myregistrykey"
+            }
+          ]
