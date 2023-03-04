@@ -28,7 +28,7 @@ stages:
     - task: Kubernetes@1
       inputs:
         connectionType: 'Azure Resource Manager'
-        azureSubscriptionEndpoint: 'NewServiceConnection'
+        azureSubscriptionEndpoint: 'Terraform_Connection'
         azureResourceGroup: 'terraform-aks-dev'
         kubernetesCluster: 'terraform-aks-dev-cluster'
         namespace: 'default'
