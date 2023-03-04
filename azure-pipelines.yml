@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageRepository: 'terraformaksdevclusterregistry1234.azurecr.io/myapp'
+  imageRepository: 'terraformaksdevclusterregistry1234.azurecr.io/java-app'
   imageTag: '$(Build.BuildId)'
   
 stages:
