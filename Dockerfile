@@ -2,7 +2,7 @@ FROM tomcat:8.0-alpine
 
 LABEL maintainer=”deepak@softwareyoga.com”
 
-ADD /home/vsts/work/1/s/original-jb-hello-world-maven-0.2.0.jar /usr/local/tomcat/webapps/
+ADD target/jb-hello-world-maven-0.2.0.jar /usr/local/tomcat/webapps/
 
 EXPOSE 8080
 
