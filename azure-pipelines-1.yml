@@ -21,10 +21,18 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build and push stage
   jobs:
   - job: Build
-    displayName: Build
+    steps:
+    - script: |
+        mvn clean package
+      displayName: 'Build and push Docker image'
+
+- stage: Build_Docker
+  displayName: Build and push stage
+  jobs:
+  - job: Build_Docker
+    displayName: Build_Docker
     pool:
       vmImage: $(vmImageName)
     steps:
