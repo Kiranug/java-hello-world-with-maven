@@ -27,7 +27,10 @@ stages:
     - script: |
         mvn clean package
       displayName: 'Build and push Docker image'
-
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/target'
+        ArtifactName: 'my-artifact'
 - stage: Build_Docker
   displayName: Build and push stage
   jobs:
