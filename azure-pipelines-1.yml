@@ -14,12 +14,11 @@ variables:
   imageRepository: 'java-app'
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildNumber)'
-  buildNumber: $(Build.BuildNumber)-custom
-
+  tags: | 
+    $(Build.BuildNumber)-$(Build.SourceBranchName)
+    mycustomtag
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-
 stages:
 - stage: Build
   jobs:
