@@ -40,6 +40,7 @@ stages:
        script: |
          echo $(System.DefaultWorkingDirectory)
          ls -ltr $(System.DefaultWorkingDirectory)
+         ls -ltr $(System.DefaultWorkingDirectory)/target
        failOnStderr: true
       
     - task: PublishBuildArtifacts@1
