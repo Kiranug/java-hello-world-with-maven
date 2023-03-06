@@ -14,9 +14,6 @@ variables:
   imageRepository: 'java-app'
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tags: | 
-    $(Build.BuildNumber)-$(Build.SourceBranchName)
-    mycustomtag
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
@@ -74,7 +71,8 @@ stages:
         buildContext: '.'
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
-          $(tag)          
+          $(Build.BuildNumber)-$(Build.SourceBranchName)
+          mycustomtag
     - task: Docker@2
       inputs:
         containerRegistry: 'terraformaksdevclusterregistry1234'
