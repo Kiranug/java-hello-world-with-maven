@@ -18,10 +18,13 @@ variables:
   vmImageName: 'ubuntu-latest'
 stages:
 - stage: Build
+  variables:
+  - template: variables.yml
   jobs:
   - job: Build
     steps:
     - script: |
+        echo $(webAppName)
         mvn clean package
         echo "Original build number: $(Build.BuildNumber)"
         echo "Modified build number: $(buildNumber)"
