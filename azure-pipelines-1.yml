@@ -63,7 +63,7 @@ stages:
          echo $(System.DefaultWorkingDirectory)    
          ls -ltr $(System.DefaultWorkingDirectory)
          ls -ltr $(Build.artifactstagingdirectory)
-         readlink target
+         readlink $(Build.artifactstagingdirectory)/target
         failOnStderr: true
 - stage: Build_Docker
   displayName: Build and push stage
