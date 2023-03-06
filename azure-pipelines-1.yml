@@ -1,3 +1,7 @@
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+steps:
+  - script: echo '$(Build.BuildNumber)' # outputs customized build number like project_def_master_20200828.1
 # Docker
 # Build and push an image to Azure Container Registry
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
@@ -15,6 +19,7 @@ variables:
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+  buildNumber: $(Build.BuildNumber)-custom
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -26,6 +31,8 @@ stages:
     steps:
     - script: |
         mvn clean package
+        echo "Original build number: $(Build.BuildNumber)"
+        echo "Modified build number: $(buildNumber)"
       displayName: 'Build and push Docker image'
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
