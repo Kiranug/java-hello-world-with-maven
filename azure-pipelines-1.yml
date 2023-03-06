@@ -55,14 +55,14 @@ stages:
         artifactName: 'drop'
         targetPath: '$(Build.artifactstagingdirectory)'
       condition: succeededOrFailed()
-    - task: Bash@4
+    - task: BashExecute@4
       inputs:
-       targetType: 'inline'
-       script: |
+        targetType: 'inline'
+        script: |
          echo $(System.DefaultWorkingDirectory)    
          ls -ltr $(System.DefaultWorkingDirectory)
          ls -ltr $(Build.artifactstagingdirectory)
-       failOnStderr: true
+        failOnStderr: true
 - stage: Build_Docker
   displayName: Build and push stage
   jobs:
