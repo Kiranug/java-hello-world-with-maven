@@ -41,6 +41,7 @@ stages:
          echo $(System.DefaultWorkingDirectory)
          ls -ltr $(System.DefaultWorkingDirectory)
          ls -ltr $(System.DefaultWorkingDirectory)/target
+         ls -ltr $(build.artifactstagingdirectory)
        failOnStderr: true
       
     - task: PublishBuildArtifacts@1
