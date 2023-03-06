@@ -39,6 +39,7 @@ stages:
        targetType: 'inline'
        script: |
          echo $(System.DefaultWorkingDirectory)
+         ls -ltr $(System.DefaultWorkingDirectory)
        failOnStderr: true
       
     - task: PublishBuildArtifacts@1
