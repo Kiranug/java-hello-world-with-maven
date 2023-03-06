@@ -75,7 +75,7 @@ stages:
         buildContext: '.'
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
-          $(tag)          
+          $(buildNumber)          
     - task: Docker@2
       inputs:
         containerRegistry: 'terraformaksdevclusterregistry1234'
