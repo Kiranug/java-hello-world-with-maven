@@ -90,6 +90,6 @@ stages:
           $(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml
         containers: |
           - name: $(imageName)
-            image: $(imageName):$(imageTag)
+            image: $(imageTag)
             ports:
             - containerPort: 8080
