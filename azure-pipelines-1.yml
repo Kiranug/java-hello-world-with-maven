@@ -14,6 +14,13 @@ variables:
   imageRepository: 'terraformaksdevclusterregistry1234'
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  azureSubscription: 'Pay-As-You-Go'
+  resourceGroupName: 'terraform-aks-dev'
+  aksClusterName: 'terraform-aks-dev-cluster'
+  dockerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
+  dockerRepository: 'terraformaksdevclusterregistry1234'
+  dockerImageTag: '$(Build.BuildId)'
+
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
@@ -69,11 +76,20 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository).azure.io/java-app
+        repository: $(imageRepository)
         dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
-          $(Build.BuildNumber)-$(Build.SourceBranchName)
-          mycustomtag
-        containerRegistry: $(imageRepository)
+          $(dockerImageTag)
+          latest
+        containerRegistry: $(dockerRegistry)
         buildContext: $(Build.SourcesDirectory)
         push: true
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscriptionEndpoint: '$(azureSubscription)'
+        azureResourceGroup: '$(resourceGroupName)'
+        kubernetesCluster: '$(aksClusterName)'
+        command: 'apply'
+        useConfigurationFile: true
+        configuration: 'DeploymentFiles/*.yaml'
