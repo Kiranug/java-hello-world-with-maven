@@ -15,6 +15,7 @@ variables:
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   imagetag: '$(Build.BuildNumber)-$(Build.SourceBranchName)'
+  imagename1: 'mytestapp'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
@@ -77,3 +78,15 @@ stages:
         containerRegistry: $(imageRepository)
         buildContext: $(Build.SourcesDirectory)
         push: true
+    - task: KubernetesManifest@0
+       inputs:
+          action: 'deploy'
+          kubernetesServiceEndpoint: 'terraform-aks-dev-cluster'
+          namespace: 'default'
+          manifests: |
+            $(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml
+          containers: |
+            - name: $(imagename1)
+              image: $(imageRepository).azure.io/$(imageRepository).azure.io/java-app:$(imageTag)
+              ports:
+              - containerPort: 8080
