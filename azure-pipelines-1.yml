@@ -16,6 +16,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   imageTag: '$(Build.BuildNumber)-$(Build.SourceBranchName)'
   imageName: 'my-java-app'
+  KubernetesConnection: 'KubernetesConnection'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
@@ -82,7 +83,8 @@ stages:
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'
-        kubernetesServiceEndpoint: 'terraform-aks-dev-cluster'
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceConnection: $(KubernetesConnection)
         namespace: 'default'
         manifests: |
           $(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml
