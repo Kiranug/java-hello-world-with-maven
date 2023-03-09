@@ -82,8 +82,9 @@ stages:
        inputs:
           action: 'deploy'
           kubernetesServiceEndpoint: 'terraform-aks-dev-cluster'
+          connectionType: 'Kubernetes Service Connection'
+          kubernetesServiceConnection: $(KubernetesConnection)
           namespace: 'default'
-          manifests: |
             $(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml
           containers: |
             - name: $(imagename1)
