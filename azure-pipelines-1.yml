@@ -20,7 +20,7 @@ variables:
   dockerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerRepository: 'terraformaksdevclusterregistry1234'
   dockerImageTag: '$(Build.BuildId)'
-  KubernetesConnection: $(KubernetesConnection)      
+  KubernetesConnection: KubernetesConnection     
          # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
