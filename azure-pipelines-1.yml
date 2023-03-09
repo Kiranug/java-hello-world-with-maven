@@ -1,39 +1,79 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app1-nginx-deployment
-  labels:
-    app: app1-nginx
-spec:
-  progressDeadlineSeconds: 3600
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app1-nginx
-  template:
-    metadata:
-      labels:
-        app: app1-nginx
-    spec:
-      containers:
-        - name: app1-nginx
-          image: $(containerRegistry).azurecr.io/$(imageRepository):$(imageTag)
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-      imagePullSecrets:
-        - name: acr-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: app1-nginx-loadbalancer-service
-  labels:
-    app: app1-nginx
-spec:
-  type: LoadBalancer
-  selector:
-    app: app1-nginx
-  ports:
-    - port: 80
-      targetPort: 8080
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '2c3583cb-9935-4097-b745-678382d70c38'
+  imageRepository: 'terraformaksdevclusterregistry1234'
+  containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+stages:
+- stage: Build
+  variables:
+  - template: variables.yml
+  jobs:
+  - job: Build
+    steps:
+    - script: |
+        echo $(webAppName)
+        mvn clean package
+        echo "Original build number: $(Build.BuildNumber)"
+        echo "Modified build number: $(buildNumber)"
+      displayName: 'Build and push Docker image'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)'
+        Contents: '**/*.jar'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
+      
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(Build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'drop'
+        targetPath: '$(Build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+         echo $(System.DefaultWorkingDirectory)    
+         ls -ltr $(System.DefaultWorkingDirectory)
+         ls -ltr $(Build.artifactstagingdirectory)/target
+        failOnStderr: true
+- stage: Build_Docker
+  displayName: Build and push stage
+  jobs:
+  - job: Build_Docker
+    displayName: Build_Docker
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository).azure.io/java-app
+        dockerfile: $(Build.SourcesDirectory)/Dockerfile
+        tags: |
+          $(Build.BuildNumber)-$(Build.SourceBranchName)
+          mycustomtag
+        containerRegistry: $(imageRepository)
+        buildContext: $(Build.SourcesDirectory)
+        push: true
