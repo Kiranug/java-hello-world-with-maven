@@ -11,10 +11,10 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '2c3583cb-9935-4097-b745-678382d70c38'
-  imageRepository: 'terraformaksdevclusterregistry1234'
-  containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
+  imageRepository: 'my-test-app'
+  containerRegistry: 'terraformaksdevclusterregistry1234'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  imageTag: '$(Build.BuildNumber)-$(Build.SourceBranchName)'
+  imageTag: '$(Build.BuildId)'
   imageName: 'my-java-app'
   KubernetesConnection: 'KubernetesConnection'
   # Agent VM image name
@@ -72,11 +72,11 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository).azure.io/java-app
+        repository: '$(containerRegistry).azurecr.io/$(imageRepository)'
         dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
-          $(imageTag)
-        containerRegistry: $(imageRepository)
+          $(containerRegistry).azurecr.io/$(imageRepository):$(imageTag)
+        containerRegistry: $(containerRegistry)
         buildContext: $(Build.SourcesDirectory)
         push: true
 
