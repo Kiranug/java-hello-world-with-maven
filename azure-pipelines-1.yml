@@ -83,7 +83,7 @@ stages:
       displayName: 'Apply Kubernetes deployment'
       inputs:
         connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceConnection: KubernetesConnectionaks
+        kubernetesServiceConnection: 'KubernetesConnectionaks'
         command: 'apply'
         useConfigurationFile: true
         configuration: '$(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml'
