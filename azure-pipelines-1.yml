@@ -14,6 +14,8 @@ variables:
   imageRepository: 'terraformaksdevclusterregistry1234'
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  IMAGE_TAG: '$(Build.BuildNumber)-$(Build.SourceBranchName)'
+  repositoryname: 'java-app'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 stages:
@@ -69,10 +71,10 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository).azure.io/java-app
+        repository: $(repositoryname)
         dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
-          $(Build.BuildNumber)-$(Build.SourceBranchName)
+          $(IMAGE_TAG)
         containerRegistry: $(imageRepository)
         buildContext: $(Build.SourcesDirectory)
         push: true
