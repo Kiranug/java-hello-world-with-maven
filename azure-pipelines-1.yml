@@ -15,6 +15,7 @@ variables:
   containerRegistry: 'terraformaksdevclusterregistry1234.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   IMAGE_TAG: '$(Build.BuildNumber)-$(Build.SourceBranchName)'
+  K8S_NAMESPACE: 'default'
   repositoryname: 'java-app'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -78,3 +79,12 @@ stages:
         containerRegistry: $(imageRepository)
         buildContext: $(Build.SourcesDirectory)
         push: true
+    - task: Kubernetes@1
+      displayName: 'Apply Kubernetes deployment'
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceConnection: 'KubernetesConnection'
+        command: 'apply'
+        useConfigurationFile: true
+        configuration: '$(Build.SourcesDirectory)/DeploymentFiles/Deployment.yaml'
+        arguments: '--namespace $(K8S_NAMESPACE)'
